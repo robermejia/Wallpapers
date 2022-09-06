@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efecto Matrix</title>
+</head>
+<body>
+    <style>
+        body{
+            margin: 0;
+            height: 99vh;
+            width: 100%;
+            background: black;
+        }
+    </style>
+
+    <canvas id="canv" width=500, height=500></canvas>
+
+    <script>
+        // BUSCAMOS EL CANVAS USANDO EL ID
+        const canvas = document.getElementById("canv");
+        // SELECCIONAMOS SU CONTEXTO Y GUARDAMOS SU ANCHO Y ALTO
+        const ctx = canvas.getContext("2d");
+        const w = canvas.width = document.body.offsetWidth;
+        const h = canvas.height = document.body.offsetHeight;
+        // DIVIDIMOS EL LIENZO EN COLUMNAS COMENZAMOS A PINTAR DESDE ARRIBA, ARRANCA EN 0
+        const cols = Math.floor(w/20)+1;
+        const ypos = Array(cols).fill(0);
+        // SELECCIONAMOS UN COLOR PARA PINTAR Y LO PINTAMOS ENTERO
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, w, h);
+
+        // CREAMOS LA FUNCION MATRIX
+
+        function matrix() {
+            // COLOR NEGRO PARA PINTAR TRANSPARENTE, PONEMOS LA CAPA CADA VEZ QUE PINTA
+            ctx.fillStyle = "#0001";
+            ctx.fillRect(0, 0, w, h);
+            // SELECCIONAMOS COLOR VERDE Y FUENTE
+            ctx.fillStyle = "#0f0";
+            ctx.font = "15pt monospace";
+            //COMENZAMOS A PINTAR DESDE POSICION Y COLUMNA, QUE ME DE LA POSICION Y UN INDICE
+            ypos.forEach((y, ind)=>{
+                // CALCULAMOS UN CARACTER AL AZAR Y LA POSICION POR DONDE SE DIBUJA
+                const text = String.fromCharCode(Math.random() * 128);
+                const x = ind * 20;
+                ctx.fillText(text, x, y);
+                // SI LA POSICION SUPERA A 100 HAZ ESTO Y DECILE QUE VUELVA ARRIBA
+                if(y > 100 + Math.random() * 10000) ypos [ind] = 0;
+                // EN CASO CONTRARIO LA POSICION VERTICAL DE ESA COLUMNA LA INCREMENTAMOS EN 20 UNIDADES
+                else ypos [ind] = y + 20;
+
+            })
+        }
+        // LE DECIMOS QUE SE EJECUTE LA FUNCION CADA 50 MILISEGUNDOS Y ESTARIA LISTO
+        setInterval(matrix, 50);
+    </script>
+</body>
+</html>
